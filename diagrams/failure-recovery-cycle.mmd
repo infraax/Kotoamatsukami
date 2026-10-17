@@ -1,0 +1,15 @@
+flowchart TD
+  A["Action fails or external state contradicts prediction"] --> B["Capture evidence and action receipt"]
+  B --> C["Independent verification"]
+  C --> D["Izanami: classify recurrence and progress"]
+  D -->|Justified retry with new evidence| E["Revise hypothesis and retry within budget"]
+  D -->|Stagnation / oscillation / invariant violation| F["Pause side effects"]
+  F --> G["Izanagi: inspect last verified state"]
+  G --> H{"Safe checkpoint available?"}
+  H -->|yes| I["Restore or compensate"]
+  H -->|no| J["Reconstruct plan from current reality"]
+  I --> K["Independent post-recovery verification"]
+  J --> K
+  K --> L{"Verified safe state?"}
+  L -->|yes| M["Replan with changed hypothesis"]
+  L -->|no| N["Human escalation or safe stop"]

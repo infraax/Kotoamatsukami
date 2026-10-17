@@ -1,0 +1,34 @@
+flowchart TB
+  M["Mission contract<br/>Goal • constraints • success criteria"] --> O["Orchestrator / runtime governor<br/>State machine • budgets • permissions • deadlines"]
+  O --> I["ITACHI agent<br/>Long-horizon planner • causal model • contingencies"]
+  O --> S["SHISUI agent<br/>Decision-state analyst • stakeholders • beliefs • incentives"]
+  I --> P["Shared plan + uncertainty ledger"]
+  S --> D["Decision-state diagnosis"]
+  D --> K["KOTOAMATSUKAMI layer<br/>Minimum authorized intervention"]
+  K --> P
+  P --> X["Policy gate + approval broker"]
+  X -->|approved| E["Executor / tool adapters"]
+  X -->|denied or unclear| H["Human review / safe stop"]
+  E --> W["External world / systems"]
+  W --> R["Observed results + artifacts"]
+  R --> V["Independent evidence verifier"]
+  V --> L["Append-only run ledger<br/>Evidence • assumptions • actions • outcomes"]
+  V --> Z{"Verified success?"}
+  Z -->|yes| C["Commit result / hand off"]
+  Z -->|no| N["IZANAMI<br/>Detect repeats, oscillation, stagnation,<br/>unsupported progress claims"]
+  N --> Q{"Same failed trajectory?"}
+  Q -->|no: new evidence/progress| O
+  Q -->|yes: stagnation/contradiction| G["IZANAGI<br/>Restore safe checkpoint or rebuild plan<br/>from verified state; preserve history"]
+  G --> T["Replan with changed hypothesis<br/>or request human decision"]
+  T --> O
+  H --> L
+  C --> L
+  subgraph GUARDRAILS["Independent control plane — agents cannot override"]
+    A["Least privilege • spend/time caps • rate limits"]
+    B["Approval for high-impact/irreversible actions"]
+    F["Rollback/compensation policy • kill switch"]
+  end
+  A -. constrains .-> O
+  B -. gates .-> X
+  F -. constrains .-> E
+  F -. constrains .-> G

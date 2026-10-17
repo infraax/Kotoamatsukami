@@ -1,0 +1,31 @@
+sequenceDiagram
+  participant Gov as Runtime Governor
+  participant Itachi
+  participant Shisui
+  participant KOTO
+  participant Exec as Executor
+  participant Verify as Independent Verifier
+  participant Izanami
+  participant Izanagi
+  Gov->>Itachi: Mission, verified state, budget
+  Itachi-->>Gov: Plan, assumptions, contingencies
+  Gov->>Shisui: Decision context and plan
+  Shisui-->>Gov: Diagnosis and evidence gaps
+  opt Intervention warranted
+    Gov->>KOTO: Diagnosis and authorized scope
+    KOTO-->>Gov: Transparent bounded intervention proposal
+  end
+  Gov->>Gov: Enforce policy / approval gate
+  Gov->>Exec: Approved action
+  Exec-->>Gov: Receipt and observations
+  Gov->>Verify: Test actual success predicate
+  Verify-->>Gov: Verified / unverified with evidence
+  Gov->>Izanami: Recent actions, progress and evidence delta
+  Izanami-->>Gov: Clear / watch / stagnant
+  alt Verified success
+    Gov->>Gov: Record terminal success and stop
+  else Stagnation or contradiction
+    Gov->>Izanagi: Verified state and recovery constraints
+    Izanagi-->>Gov: Restore, compensate, reconstruct or escalate
+    Gov->>Itachi: Replan from verified current state
+  end
