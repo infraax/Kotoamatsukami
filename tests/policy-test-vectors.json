@@ -1,0 +1,66 @@
+{
+  "purpose": "Manual acceptance vectors for the reference policy helpers; not an executed test report.",
+  "cases": [
+    {
+      "name": "unlisted-action-denied",
+      "input": {
+        "kind": "delete_prod",
+        "target": "prod"
+      },
+      "expected": "DENY"
+    },
+    {
+      "name": "unlisted-target-denied",
+      "input": {
+        "kind": "read",
+        "target": "unknown"
+      },
+      "expected": "DENY"
+    },
+    {
+      "name": "high-risk-approval",
+      "input": {
+        "kind": "deploy",
+        "target": "staging",
+        "risk": "high",
+        "reversible": true
+      },
+      "expected": "APPROVAL_REQUIRED"
+    },
+    {
+      "name": "irreversible-approval",
+      "input": {
+        "kind": "write",
+        "target": "staging",
+        "risk": "low",
+        "reversible": false
+      },
+      "expected": "APPROVAL_REQUIRED"
+    },
+    {
+      "name": "repeat-with-new-evidence",
+      "input": {
+        "semantic_repeat_count": 2,
+        "evidence_delta": 1,
+        "progress_delta": 1
+      },
+      "expected": "changed_retry_may_be_considered"
+    },
+    {
+      "name": "repeat-without-progress",
+      "input": {
+        "semantic_repeat_count": 2,
+        "evidence_delta": 0,
+        "progress_delta": 0
+      },
+      "expected": "recover_or_escalate"
+    },
+    {
+      "name": "recovery-preserves-ledger",
+      "input": {
+        "attempt_to_delete_prior_audit_event": true
+      },
+      "expected": "DENY"
+    }
+  ]
+}
